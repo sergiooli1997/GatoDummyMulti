@@ -2,7 +2,7 @@
 
 import socket
 import os
-from time import time
+import time
 
 bufferSize = 1024
 
@@ -30,7 +30,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
     PORT = int(input())
     TCPClientSocket.connect((HOST, PORT))
     os.system("cls")
-    tiempo_inicial = time()
+    tiempo_inicial = time.time()
     print("---------BIENVENIDO AL GATO DUMMY---------")
     print("Elige dificultad ;)")
     print("1.- Dificultad principiante")
@@ -153,7 +153,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 imprimir_tablero(tablero, 5)
                 os.system("pause")
                 os.system("cls")
-    tiempo_final = time()
+    tiempo_final = time.time()
     tiempo_ejecucion = tiempo_final - tiempo_inicial
     print('Duracion de la partida: %.2f segs.' % round(tiempo_ejecucion, 2))
     os.system("pause")
