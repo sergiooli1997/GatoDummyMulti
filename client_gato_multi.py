@@ -61,7 +61,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 y = int(input())
                 if tablero[x][y] == '-':
                     TCPClientSocket.sendall(bytes([x]))
+                    print('Enviado x={}'.format(x))
                     TCPClientSocket.sendall(bytes([y]))
+                    print('Enviado y={}'.format(y))
                     break
                 else:
                     print("Casilla Ocupada :C")

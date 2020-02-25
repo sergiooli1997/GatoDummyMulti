@@ -37,7 +37,7 @@ def gestion_conexiones(listaconexiones):
 
 def recibir_datos(conn, addr):
     try:
-        count=0
+        count = 0
         cur_thread = threading.current_thread()
         print("Recibiendo datos del cliente {} en el {}".format(addr, cur_thread.name))
         while True:
