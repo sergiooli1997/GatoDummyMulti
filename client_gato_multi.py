@@ -21,14 +21,14 @@ def imprimir_tablero(tablero, n):
         a = ""
 
 
-with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
     count = 0
     bandera = 0
     print("Ingresa direccion del servidor")
     HOST = input()
     print("Ingresa puerto")
     PORT = int(input())
-    serverAddressPort = (HOST, PORT)
+    TCPClientSocket.connect((HOST, PORT))
     os.system("cls")
     tiempo_inicial = time()
     print("---------BIENVENIDO AL GATO DUMMY---------")
@@ -37,13 +37,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
     print("2.- Dificultad avanzada")
     dificultad = int(input())
     os.system("cls")
-    UDPClientSocket.sendto(bytes([dificultad]), serverAddressPort)
+    TCPClientSocket.sendall(bytes([dificultad]))
     if dificultad == 1:
         tablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
         imprimir_tablero(tablero, 3)
         while True:
-            data = UDPClientSocket.recvfrom(bufferSize)
-            bandera = int.from_bytes(data[0], "big")
+            data = TCPClientSocket.recv(bufferSize)
+            bandera = int.from_bytes(data, "big")
             if bandera == 0:
                 pass
             else:
@@ -60,16 +60,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
                 x = int(input())
                 y = int(input())
                 if tablero[x][y] == '-':
-                    UDPClientSocket.sendto(bytes([x]), serverAddressPort)
-                    UDPClientSocket.sendto(bytes([y]), serverAddressPort)
+                    TCPClientSocket.sendall(bytes([x]))
+                    TCPClientSocket.sendall(bytes([y]))
                     break
                 else:
                     print("Casilla Ocupada :C")
             tablero[x][y] = 'X'
             os.system("cls")
             imprimir_tablero(tablero, 3)
-            data = UDPClientSocket.recvfrom(bufferSize)
-            bandera = int.from_bytes(data[0], "big")
+            data = TCPClientSocket.recv(bufferSize)
+            bandera = int.from_bytes(data, "big")
             if bandera == 0:
                 pass
             else:
@@ -85,10 +85,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
                 print('Empate :o')
                 break
             else:
-                data = UDPClientSocket.recvfrom(bufferSize)
-                x_server = int.from_bytes(data[0], "big")
-                data = UDPClientSocket.recvfrom(bufferSize)
-                y_server = int.from_bytes(data[0], "big")
+                data = TCPClientSocket.recv(bufferSize)
+                x_server = int.from_bytes(data, "big")
+                data = TCPClientSocket.recv(bufferSize)
+                y_server = int.from_bytes(data, "big")
                 tablero[x_server][y_server] = 'O'
                 count += 1
                 print("El servidor eligio casilla.")
@@ -100,8 +100,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
                    ['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-']]
         imprimir_tablero(tablero, 5)
         while True:
-            data = UDPClientSocket.recvfrom(bufferSize)
-            bandera = int.from_bytes(data[0], "big")
+            data = TCPClientSocket.recv(bufferSize)
+            bandera = int.from_bytes(data, "big")
             if bandera == 0:
                 pass
             else:
@@ -118,16 +118,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
                 x = int(input())
                 y = int(input())
                 if tablero[x][y] == '-':
-                    UDPClientSocket.sendto(bytes([x]), serverAddressPort)
-                    UDPClientSocket.sendto(bytes([y]), serverAddressPort)
+                    TCPClientSocket.sendall(bytes([x]))
+                    TCPClientSocket.sendall(bytes([y]))
                     break
                 else:
                     print("Casilla Ocupada :C")
             tablero[x][y] = 'X'
             os.system("cls")
             imprimir_tablero(tablero, 5)
-            data = UDPClientSocket.recvfrom(bufferSize)
-            bandera = int.from_bytes(data[0], "big")
+            data = TCPClientSocket.recv(bufferSize)
+            bandera = int.from_bytes(data, "big")
             if bandera == 0:
                 pass
             else:
@@ -143,10 +143,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as UDPClientSocket:
                 print('Empate :o')
                 break
             else:
-                data = UDPClientSocket.recvfrom(bufferSize)
-                x_server = int.from_bytes(data[0], "big")
-                data = UDPClientSocket.recvfrom(bufferSize)
-                y_server = int.from_bytes(data[0], "big")
+                data = TCPClientSocket.recv(bufferSize)
+                x_server = int.from_bytes(data, "big")
+                data = TCPClientSocket.recv(bufferSize)
+                y_server = int.from_bytes(data, "big")
                 tablero[x_server][y_server] = 'O'
                 count += 1
                 print("El servidor eligio casilla.")
