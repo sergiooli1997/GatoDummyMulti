@@ -4,7 +4,7 @@ import socket
 import os
 import time
 
-bufferSize = 1024
+bufferSize = 2
 
 
 def imprimir_tablero(tablero, n):
@@ -21,13 +21,11 @@ def imprimir_tablero(tablero, n):
         a = ""
 
 
+HOST = "127.0.0.1"  # The server's hostname or IP address
+PORT = 65432  # The port used by the server
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
     count = 0
-    bandera = 0
-    print("Ingresa direccion del servidor")
-    HOST = input()
-    print("Ingresa puerto")
-    PORT = int(input())
     TCPClientSocket.connect((HOST, PORT))
     os.system("cls")
     tiempo_inicial = time.time()
@@ -43,7 +41,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
         imprimir_tablero(tablero, 3)
         while True:
             data = TCPClientSocket.recv(bufferSize)
-            bandera = int.from_bytes(data, "big")
+            strings = data.decode('utf8')
+            bandera = int(strings)
+            print(data)
             if bandera == 0:
                 pass
             else:
@@ -71,7 +71,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
             os.system("cls")
             imprimir_tablero(tablero, 3)
             data = TCPClientSocket.recv(bufferSize)
-            bandera = int.from_bytes(data, "big")
+            strings = data.decode('utf8')
+            bandera = int(strings)
+            print(bandera)
             if bandera == 0:
                 pass
             else:
@@ -88,9 +90,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 break
             else:
                 data = TCPClientSocket.recv(bufferSize)
-                x_server = int.from_bytes(data, "big")
+                strings = data.decode('utf8')
+                x_server = int(strings)
                 data = TCPClientSocket.recv(bufferSize)
-                y_server = int.from_bytes(data, "big")
+                strings = data.decode('utf8')
+                y_server = int(strings)
                 tablero[x_server][y_server] = 'O'
                 count += 1
                 print("El servidor eligio casilla.")
