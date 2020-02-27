@@ -21,6 +21,26 @@ def imprimir_tablero(tablero, n):
         a = ""
 
 
+def actualiza_tablero(tablero, n, TCPClientSocket):
+    for i in range(n):
+        for j in range(n):
+            data = TCPClientSocket.recv(bufferSize)
+            tablero[i][j] = data.decode('utf8')
+
+
+def tablero_lleno(tablero, n):
+    cont = 0
+    for i in range(n):
+        for j in range(n):
+            if tablero[i][j] != '-':
+                cont += 1
+    if cont == 9 and n == 3:
+        return 1
+    if cont == 25 and n == 5:
+        return 1
+    return 0
+
+
 HOST = "127.0.0.1"  # The server's hostname or IP address
 PORT = 65432  # The port used by the server
 
@@ -39,23 +59,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
     if dificultad == 1:
         tablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
         imprimir_tablero(tablero, 3)
+        print('Ingresa el simbolo que utilizaras')
+        simbolo = input()
+        TCPClientSocket.send(simbolo.encode('utf8'))
         while True:
-            data = TCPClientSocket.recv(bufferSize)
-            strings = data.decode('utf8')
-            bandera = int(strings)
-            print(data)
-            if bandera == 0:
-                pass
-            else:
-                print('Finalizado.')
-                imprimir_tablero(tablero, 3)
-                if bandera == 1:
-                    print('Ganaste :D Buen juego')
-                else:
-                    print('Perdiste :( ')
-                break
+            os.system("cls")
+            imprimir_tablero(tablero, 3)
             while True:
-                imprimir_tablero(tablero, 3)
                 print("Elige casilla")
                 x = int(input())
                 y = int(input())
@@ -67,13 +77,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                     break
                 else:
                     print("Casilla Ocupada :C")
-            tablero[x][y] = 'X'
+            tablero[x][y] = simbolo
             os.system("cls")
             imprimir_tablero(tablero, 3)
+            actualiza_tablero(tablero, 3, TCPClientSocket)
             data = TCPClientSocket.recv(bufferSize)
             strings = data.decode('utf8')
             bandera = int(strings)
-            print(bandera)
             if bandera == 0:
                 pass
             else:
@@ -84,56 +94,37 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 else:
                     print('Perdiste :( ')
                 break
-            count += 1
-            if count == 9:
-                print('Empate :o')
+            if tablero_lleno(tablero, 3) == 1:
                 break
-            else:
-                data = TCPClientSocket.recv(bufferSize)
-                strings = data.decode('utf8')
-                x_server = int(strings)
-                data = TCPClientSocket.recv(bufferSize)
-                strings = data.decode('utf8')
-                y_server = int(strings)
-                tablero[x_server][y_server] = 'O'
-                count += 1
-                print("El servidor eligio casilla.")
-                imprimir_tablero(tablero, 3)
-                os.system("pause")
-                os.system("cls")
     if dificultad == 2:
         tablero = [['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-'],
                    ['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-']]
-        imprimir_tablero(tablero, 5)
+        imprimir_tablero(tablero, 3)
+        print('Ingresa el simbolo que utilizaras')
+        simbolo = input()
+        TCPClientSocket.send(simbolo.encode('utf8'))
         while True:
-            data = TCPClientSocket.recv(bufferSize)
-            bandera = int.from_bytes(data, "big")
-            if bandera == 0:
-                pass
-            else:
-                print('Finalizado.')
-                imprimir_tablero(tablero, 5)
-                if bandera == 1:
-                    print('Ganaste :D Buen juego')
-                else:
-                    print('Perdiste :( ')
-                break
+            os.system("cls")
+            imprimir_tablero(tablero, 5)
             while True:
-                imprimir_tablero(tablero, 5)
                 print("Elige casilla")
                 x = int(input())
                 y = int(input())
                 if tablero[x][y] == '-':
                     TCPClientSocket.sendall(bytes([x]))
+                    print('Enviado x={}'.format(x))
                     TCPClientSocket.sendall(bytes([y]))
+                    print('Enviado y={}'.format(y))
                     break
                 else:
                     print("Casilla Ocupada :C")
-            tablero[x][y] = 'X'
+            tablero[x][y] = simbolo
             os.system("cls")
             imprimir_tablero(tablero, 5)
+            actualiza_tablero(tablero, 5, TCPClientSocket)
             data = TCPClientSocket.recv(bufferSize)
-            bandera = int.from_bytes(data, "big")
+            strings = data.decode('utf8')
+            bandera = int(strings)
             if bandera == 0:
                 pass
             else:
@@ -144,21 +135,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 else:
                     print('Perdiste :( ')
                 break
-            count += 1
-            if count == 25:
-                print('Empate :o')
+            if tablero_lleno(tablero, 5) == 1:
                 break
-            else:
-                data = TCPClientSocket.recv(bufferSize)
-                x_server = int.from_bytes(data, "big")
-                data = TCPClientSocket.recv(bufferSize)
-                y_server = int.from_bytes(data, "big")
-                tablero[x_server][y_server] = 'O'
-                count += 1
-                print("El servidor eligio casilla.")
-                imprimir_tablero(tablero, 5)
-                os.system("pause")
-                os.system("cls")
     tiempo_final = time.time()
     tiempo_ejecucion = tiempo_final - tiempo_inicial
     print('Duracion de la partida: %.2f segs.' % round(tiempo_ejecucion, 2))
