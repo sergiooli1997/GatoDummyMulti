@@ -27,7 +27,7 @@ def imprimir_tablero(tablero, n):
 def actualiza_tablero(tablero, n, TCPClientSocket):
     for i in range(n):
         for j in range(n):
-            data = TCPClientSocket.recv(bufferSize-1)
+            data = TCPClientSocket.recv(bufferSize - 1)
             tablero[i][j] = data.decode('utf8')
     print('Se actualizo')
 
@@ -45,12 +45,13 @@ def tablero_lleno(tablero, n):
     return 0
 
 
-HOST = "127.0.0.1"  # The server's hostname or IP address
-PORT = 65432  # The port used by the server
-
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
-    TCPClientSocket.connect((HOST, PORT))
     os.system("cls")
+    print('Ingresa direccion del servidor')
+    HOST = input()
+    print('Ingresa direccion del servidor')
+    PORT = int(input())
+    TCPClientSocket.connect((HOST, PORT))
     tiempo_inicial = time.time()
     print("---------BIENVENIDO AL GATO DUMMY---------")
     print("Elige dificultad ;)")
@@ -66,6 +67,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
         TCPClientSocket.send(simbolo.encode('utf8'))
         while True:
             os.system("cls")
+            actualiza_tablero(tablero3, 3, TCPClientSocket)
             imprimir_tablero(tablero3, 3)
             while True:
                 print("Elige casilla")
@@ -106,6 +108,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
         TCPClientSocket.send(simbolo.encode('utf8'))
         while True:
             os.system("cls")
+            actualiza_tablero(tablero5, 5, TCPClientSocket)
             imprimir_tablero(tablero5, 5)
             while True:
                 print("Elige casilla")
