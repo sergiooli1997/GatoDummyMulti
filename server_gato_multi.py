@@ -12,6 +12,12 @@ PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 bufferSize = 1024
 
 
+def limpiar_tablero(tablero, n):
+    for i in range(n):
+        for j in range(n):
+            tablero[i][j] = '-'
+
+
 def actualiza_tablero(tablero, n, Client_conn):
     for i in range(n):
         for j in range(n):
@@ -144,7 +150,7 @@ def recibir_datos(Client_conn, addr):
             dificultad = int.from_bytes(data, "big")
             print("Recibido,", dificultad, "   de ", addr)
             if dificultad == 1:
-                #print ('Ingresa el simbolo que utilizaras')
+                # print ('Ingresa el simbolo que utilizaras')
                 data = Client_conn.recv(bufferSize)
                 simbolo = data.decode("utf-8")
                 while True:
@@ -159,12 +165,15 @@ def recibir_datos(Client_conn, addr):
                     actualiza_tablero(tablero3, 3, Client_conn)
                     print(tablero3)
                     # determinar ganador
-                    if horizontal(tablero3, 3, simbolo) == 0 and vertical(tablero3, 3, simbolo) == 0 and diagonal(tablero3, 3, simbolo) == 0:
+                    if horizontal(tablero3, 3, simbolo) == 0 and vertical(tablero3, 3, simbolo) == 0 and diagonal(
+                            tablero3, 3, simbolo) == 0:
                         Client_conn.send(bytes(str(0) + '\n', 'utf8'))
-                    if horizontal(tablero3, 3, simbolo) == 1 or vertical(tablero3, 3, simbolo) == 1 or diagonal(tablero3, 3, simbolo) == 1:
+                    if horizontal(tablero3, 3, simbolo) == 1 or vertical(tablero3, 3, simbolo) == 1 or diagonal(
+                            tablero3, 3, simbolo) == 1:
                         Client_conn.send(bytes(str(1) + '\n', 'utf8'))
                         break
-                    if horizontal(tablero3, 3, simbolo) == 2 or vertical(tablero3, 3, simbolo) == 2 or diagonal(tablero3, 3, simbolo) == 2:
+                    if horizontal(tablero3, 3, simbolo) == 2 or vertical(tablero3, 3, simbolo) == 2 or diagonal(
+                            tablero3, 3, simbolo) == 2:
                         Client_conn.send(bytes(str(2) + '\n', 'utf8'))
                         break
                     if tablero_lleno(tablero3, 3) == 1:
@@ -197,6 +206,8 @@ def recibir_datos(Client_conn, addr):
                     if tablero_lleno(tablero5, 5) == 1:
                         break
                     print(tablero5)
+            limpiar_tablero(tablero5, 5)
+            limpiar_tablero(tablero3, 3)
             break
     except Exception as e:
         print(e)

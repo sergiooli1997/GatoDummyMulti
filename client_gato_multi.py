@@ -49,7 +49,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
     os.system("cls")
     print('Ingresa direccion del servidor')
     HOST = input()
-    print('Ingresa direccion del servidor')
+    print('Ingresa puerto del servidor')
     PORT = int(input())
     TCPClientSocket.connect((HOST, PORT))
     tiempo_inicial = time.time()
