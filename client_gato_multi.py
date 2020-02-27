@@ -73,11 +73,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 print("Elige casilla")
                 x = int(input())
                 y = int(input())
+                actualiza_tablero(tablero3, 3, TCPClientSocket)
                 if tablero3[x][y] == '-':
                     TCPClientSocket.sendall(bytes([x]))
-                    print('Enviado x={}'.format(x))
                     TCPClientSocket.sendall(bytes([y]))
-                    print('Enviado y={}'.format(y))
                     break
                 else:
                     print("Casilla Ocupada :C")
