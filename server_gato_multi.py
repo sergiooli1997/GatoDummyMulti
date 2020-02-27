@@ -16,6 +16,7 @@ def actualiza_tablero(tablero, n, Client_conn):
     for i in range(n):
         for j in range(n):
             Client_conn.send(tablero[i][j].encode('utf8'))
+    print('Se actualizo')
 
 
 def tablero_lleno(tablero, n):
@@ -36,7 +37,7 @@ def horizontal(tablero, n, simbolo):
     client_win = 0
     for i in range(n):
         for j in range(n):
-            if tablero[i][j] != simbolo:
+            if tablero[i][j] != simbolo and tablero[i][j] != '-':
                 server_win += 1
             if tablero[i][j] == simbolo:
                 client_win += 1
@@ -58,7 +59,7 @@ def vertical(tablero, n, simbolo):
     client_win = 0
     for j in range(n):
         for i in range(n):
-            if tablero[i][j] != simbolo:
+            if tablero[i][j] != simbolo and tablero[i][j] != '-':
                 server_win += 1
             if tablero[i][j] == simbolo:
                 client_win += 1
@@ -80,7 +81,7 @@ def diagonal(tablero, n, simbolo):
     client_win = 0
     for i in range(n):
         for j in range(n):
-            if tablero[i][j] != simbolo and i == j:
+            if tablero[i][j] != simbolo and i == j and tablero[i][j] != '-':
                 server_win += 1
             if tablero[i][j] == simbolo and i == j:
                 client_win += 1
@@ -96,7 +97,7 @@ def diagonal(tablero, n, simbolo):
     client_win = 0
     for i in range(n):
         for j in range(n):
-            if tablero[i][j] != simbolo and (i + j) == (n - 1):
+            if tablero[i][j] != simbolo and (i + j) == (n - 1) and tablero[i][j] != '-':
                 server_win += 1
             if tablero[i][j] == simbolo and (i + j) == (n - 1):
                 client_win += 1
@@ -155,15 +156,12 @@ def recibir_datos(Client_conn, addr):
                     actualiza_tablero(tablero3, 3, Client_conn)
                     print(tablero3)
                     # determinar ganador
-                    if horizontal(tablero3, 3, simbolo) == 0 and vertical(tablero3, 3, simbolo) == 0 and \
-                            diagonal(tablero3, 3, simbolo) == 0:
+                    if horizontal(tablero3, 3, simbolo) == 0 and vertical(tablero3, 3, simbolo) == 0 and diagonal(tablero3, 3, simbolo) == 0:
                         Client_conn.send(bytes(str(0) + '\n', 'utf8'))
-                    if horizontal(tablero3, 3, simbolo) == 1 or vertical(tablero3, 3, simbolo) == 1 or \
-                            diagonal(tablero3, 3, simbolo) == 1:
+                    if horizontal(tablero3, 3, simbolo) == 1 or vertical(tablero3, 3, simbolo) == 1 or diagonal(tablero3, 3, simbolo) == 1:
                         Client_conn.send(bytes(str(1) + '\n', 'utf8'))
                         break
-                    if horizontal(tablero3, 3, simbolo) == 2 or vertical(tablero3, 3, simbolo) == 2 or \
-                            diagonal(tablero3, 3, simbolo) == 2:
+                    if horizontal(tablero3, 3, simbolo) == 2 or vertical(tablero3, 3, simbolo) == 2 or diagonal(tablero3, 3, simbolo) == 2:
                         Client_conn.send(bytes(str(2) + '\n', 'utf8'))
                         break
                     if tablero_lleno(tablero3, 3) == 1:
