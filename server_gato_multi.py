@@ -206,13 +206,13 @@ def recibir_datos(Client_conn, addr):
                     if tablero_lleno(tablero5, 5) == 1:
                         break
                     print(tablero5)
-            limpiar_tablero(tablero5, 5)
-            limpiar_tablero(tablero3, 3)
             break
     except Exception as e:
         print(e)
     finally:
         Client_conn.close()
+        limpiar_tablero(tablero5, 5)
+        limpiar_tablero(tablero3, 3)
 
 
 tablero3 = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
