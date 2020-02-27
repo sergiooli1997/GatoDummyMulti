@@ -146,8 +146,6 @@ def recibir_datos(Client_conn, addr):
         cur_thread = threading.current_thread()
         print("Recibiendo datos del cliente {} en el {}".format(addr, cur_thread.name))
         while True:
-            limpiar_tablero(tablero5, 5)
-            limpiar_tablero(tablero3, 3)
             data = Client_conn.recv(bufferSize)
             dificultad = int.from_bytes(data, "big")
             print("Recibido,", dificultad, "   de ", addr)
@@ -158,7 +156,6 @@ def recibir_datos(Client_conn, addr):
                 while True:
                     actualiza_tablero(tablero3, 3, Client_conn)
                     time.sleep(2.1)
-                    actualiza_tablero(tablero3, 3, Client_conn)
                     data = Client_conn.recv(bufferSize)
                     x = int.from_bytes(data, "big")
                     data = Client_conn.recv(bufferSize)

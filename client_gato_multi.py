@@ -9,7 +9,6 @@ tablero3 = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
 tablero5 = [['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-'],
             ['-', '-', '-', '-', '-'], ['-', '-', '-', '-', '-']]
 
-
 def imprimir_tablero(tablero, n):
     a = ""
     if n == 3:
@@ -73,7 +72,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 print("Elige casilla")
                 x = int(input())
                 y = int(input())
-                actualiza_tablero(tablero3, 3, TCPClientSocket)
+                imprimir_tablero(tablero3, 3)
                 if tablero3[x][y] == '-':
                     TCPClientSocket.sendall(bytes([x]))
                     TCPClientSocket.sendall(bytes([y]))
