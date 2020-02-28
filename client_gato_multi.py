@@ -68,23 +68,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
             os.system("cls")
             actualiza_tablero(tablero3, 3, TCPClientSocket)
             imprimir_tablero(tablero3, 3)
-            while True:
-                print("Elige casilla")
-                x = int(input())
-                y = int(input())
-                imprimir_tablero(tablero3, 3)
-                if tablero3[x][y] == '-':
-                    TCPClientSocket.sendall(bytes([x]))
-                    TCPClientSocket.sendall(bytes([y]))
-                    break
-                else:
-                    print("Casilla Ocupada :C")
+            print("Elige casilla")
+            x = int(input())
+            y = int(input())
+            actualiza_tablero(tablero3, 3, TCPClientSocket)
+            TCPClientSocket.sendall(bytes([x]))
+            TCPClientSocket.sendall(bytes([y]))
             os.system("cls")
             actualiza_tablero(tablero3, 3, TCPClientSocket)
             imprimir_tablero(tablero3, 3)
             data = TCPClientSocket.recv(bufferSize)
             strings = data.decode('utf8')
-            print(strings)
             bandera = int(strings)
             if bandera == 0:
                 pass

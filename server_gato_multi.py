@@ -143,6 +143,7 @@ def gestion_conexiones(listaconexiones):
 
 def recibir_datos(Client_conn, addr):
     try:
+        bandera=1
         cur_thread = threading.current_thread()
         print("Recibiendo datos del cliente {} en el {}".format(addr, cur_thread.name))
         while True:
@@ -156,6 +157,7 @@ def recibir_datos(Client_conn, addr):
                 while True:
                     actualiza_tablero(tablero3, 3, Client_conn)
                     time.sleep(2.1)
+                    actualiza_tablero(tablero3, 3, Client_conn)
                     data = Client_conn.recv(bufferSize)
                     x = int.from_bytes(data, "big")
                     data = Client_conn.recv(bufferSize)
