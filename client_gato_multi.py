@@ -71,7 +71,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
             print("Elige casilla")
             x = int(input())
             y = int(input())
-            actualiza_tablero(tablero3, 3, TCPClientSocket)
             TCPClientSocket.sendall(bytes([x]))
             TCPClientSocket.sendall(bytes([y]))
             os.system("cls")
@@ -94,7 +93,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
                 break
             os.system("pause")
     if dificultad == 2:
-        imprimir_tablero(tablero5, 3)
+        imprimir_tablero(tablero5, 5)
         print('Ingresa el simbolo que utilizaras')
         simbolo = input()
         TCPClientSocket.send(simbolo.encode('utf8'))
@@ -102,18 +101,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPClientSocket:
             os.system("cls")
             actualiza_tablero(tablero5, 5, TCPClientSocket)
             imprimir_tablero(tablero5, 5)
-            while True:
-                print("Elige casilla")
-                x = int(input())
-                y = int(input())
-                if tablero5[x][y] == '-':
-                    TCPClientSocket.sendall(bytes([x]))
-                    print('Enviado x={}'.format(x))
-                    TCPClientSocket.sendall(bytes([y]))
-                    print('Enviado y={}'.format(y))
-                    break
-                else:
-                    print("Casilla Ocupada :C")
+            print("Elige casilla")
+            x = int(input())
+            y = int(input())
+            TCPClientSocket.sendall(bytes([x]))
+            TCPClientSocket.sendall(bytes([y]))
             os.system("cls")
             actualiza_tablero(tablero5, 5, TCPClientSocket)
             imprimir_tablero(tablero5, 5)

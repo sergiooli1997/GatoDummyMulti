@@ -156,8 +156,6 @@ def recibir_datos(Client_conn, addr):
                 simbolo = data.decode("utf-8")
                 while True:
                     actualiza_tablero(tablero3, 3, Client_conn)
-                    time.sleep(2.1)
-                    actualiza_tablero(tablero3, 3, Client_conn)
                     data = Client_conn.recv(bufferSize)
                     x = int.from_bytes(data, "big")
                     data = Client_conn.recv(bufferSize)
@@ -185,6 +183,7 @@ def recibir_datos(Client_conn, addr):
                 data = Client_conn.recv(bufferSize)
                 simbolo = data.decode("utf-8")
                 while True:
+                    actualiza_tablero(tablero5, 5, Client_conn)
                     data = Client_conn.recv(bufferSize)
                     x = int.from_bytes(data, "big")
                     data = Client_conn.recv(bufferSize)
