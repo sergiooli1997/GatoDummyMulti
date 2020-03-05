@@ -119,12 +119,15 @@ def diagonal(tablero, n, simbolo):
 
 
 def servirPorSiempre(socketTcp, listaconexiones):
+    NUM_THREADS = 5
+
+    barrier = threading.Barrier(NUM_THREADS)
     try:
         while True:
             client_conn, client_addr = socketTcp.accept()
             print("Conectado a", client_addr)
             listaconexiones.append(client_conn)
-            thread_read = threading.Thread(target=recibir_datos, args=[client_conn, client_addr])
+            thread_read = threading.Thread(target=recibir_datos, args=[client_conn, client_addr, barrier])
             thread_read.start()
             gestion_conexiones(listaConexiones)
     except Exception as e:
@@ -141,7 +144,11 @@ def gestion_conexiones(listaconexiones):
     print(listaconexiones)
 
 
-def recibir_datos(Client_conn, addr):
+def recibir_datos(Client_conn, addr, barrier):
+    print(threading.current_thread().name,
+          'Esperando en la barrera con {} hilos más'.format(barrier.n_waiting))
+    jugador = barrier.wait()
+    print(threading.current_thread().name, 'Después de la barrera', jugador)
     try:
         bandera=1
         cur_thread = threading.current_thread()
@@ -230,5 +237,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as TCPServerSocket:
     TCPServerSocket.bind(serveraddr)
     TCPServerSocket.listen(int(numConn))
     print("El servidor TCP está disponible y en espera de solicitudes")
-
     servirPorSiempre(TCPServerSocket, listaConexiones)
